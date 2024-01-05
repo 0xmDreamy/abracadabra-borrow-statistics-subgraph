@@ -1,0 +1,24 @@
+{
+  "name": "abracadabra-borrow-statistics-subgraph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "prepare": "concurrently \"pnpm:prepare:*\"",
+    "prepare:subgraph": "mustache ./config/$NETWORK.js subgraph.template.yaml > subgraph.yaml",
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ abracadabra-borrow-statistics",
+    "create-local": "graph create --node http://localhost:8020/ abracadabra-borrow-statistics",
+    "remove-local": "graph remove --node http://localhost:8020/ abracadabra-borrow-statistics",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 abracadabra-borrow-statistics",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.64.1",
+    "@graphprotocol/graph-ts": "0.32.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "matchstick-as": "0.6.0",
+    "mustache": "^4.2.0"
+  }
+}

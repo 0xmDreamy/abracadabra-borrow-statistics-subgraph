@@ -1,0 +1,29 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  {{#cauldrons}}
+  - kind: ethereum
+    name: {{name}}
+    network: {{network}}
+    source:
+      address: "{{address}}"
+      abi: CauldronV4
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LogBorrow
+        - LogRepay
+      abis:
+        - name: CauldronV4
+          file: ./abis/CauldronV4.json
+      eventHandlers:
+        - event: LogBorrow(indexed address,indexed address,uint256,uint256)
+          handler: handleLogBorrow
+        - event: LogRepay(indexed address,indexed address,uint256,uint256)
+          handler: handleLogRepay
+      file: ./src/cauldronV4.ts
+  {{/cauldrons}}

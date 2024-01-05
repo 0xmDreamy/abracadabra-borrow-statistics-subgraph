@@ -1,0 +1,35 @@
+type Cauldron @entity {
+  id: Bytes! # Address
+  totalBorrowBase: BigInt!
+  weekSnapshot: [CauldronWeekSnapshot!]! @derivedFrom(field: "cauldron")
+  userWeekSnapshot: [UserCauldronWeekSnapshot!]! @derivedFrom(field: "cauldron")
+}
+
+type CauldronWeekSnapshot @entity {
+  id: String! # ${cauldron.id}-${week}
+  cauldron: Cauldron!
+  week: BigInt!
+  weekStartTimestamp: BigInt!
+  updatedAt: BigInt!
+  latestBorrowBase: BigInt!
+  cumulativeBorrowBaseSeconds: BigInt!
+  timeWeightedAverageBorrowBaseWeekEnd: BigInt!
+}
+
+type User @entity {
+  id: Bytes! # Address
+  borrowPart: BigInt!
+  weekSnapshot: [UserCauldronWeekSnapshot!]! @derivedFrom(field: "user")
+}
+
+type UserCauldronWeekSnapshot @entity {
+  id: String! # ${user.id}-${cauldron.id}-${week}
+  user: User!
+  cauldron: Cauldron!
+  week: BigInt!
+  weekStartTimestamp: BigInt!
+  updatedAt: BigInt!
+  latestBorrowPart: BigInt!
+  cumulativeBorrowPartSeconds: BigInt!
+  timeWeightedAverageBorrowPartWeekEnd: BigInt!
+}
